@@ -6,6 +6,7 @@ public class PasswordStrengthChecker {
 
         Scanner sc = new Scanner(System.in);
 
+        `
         System.out.println("================================");
         System.out.println("     PASSWORD STRENGTH CHECKER");
         System.out.println("================================");
