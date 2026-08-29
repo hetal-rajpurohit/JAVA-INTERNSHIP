@@ -17,66 +17,83 @@ public class FileEncryptDecrypt {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+        String again;
 
-        try {
-            System.out.println("=== File Encryption/Decryption ===");
+        do {
+            try {
+                System.out.println("\n=== File Encryption/Decryption ===");
 
-            System.out.print("Enter 1 for Encryption or 2 for Decryption: ");
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+                System.out.print("Enter 1 for Encryption or 2 for Decryption: ");
+                int choice = scanner.nextInt();
+                scanner.nextLine();
 
-            System.out.print("Enter the file path: ");
-            String filePath = scanner.nextLine();
+                System.out.print("Enter the file path: ");
+                String filePath = scanner.nextLine();
 
-            System.out.print("Enter the encryption key (number): ");
-            int key = scanner.nextInt();
+                System.out.print("Enter the encryption key (number): ");
+                int key = scanner.nextInt();
+                scanner.nextLine();
 
-            // Read file content
-            BufferedReader reader = new BufferedReader(new FileReader(filePath));
-            StringBuilder content = new StringBuilder();
-            String line;
+                // Read file content
+                BufferedReader reader =
+                        new BufferedReader(new FileReader(filePath));
 
-            while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
+                StringBuilder content = new StringBuilder();
+                String line;
+
+                while ((line = reader.readLine()) != null) {
+                    content.append(line).append("\n");
+                }
+
+                reader.close();
+
+                String result;
+
+                if (choice == 1) {
+
+                    // Encryption
+                    result = processText(content.toString(), key);
+
+                    BufferedWriter writer =
+                            new BufferedWriter(
+                                    new FileWriter("encrypted.txt"));
+
+                    writer.write(result);
+                    writer.close();
+
+                    System.out.println("File encrypted successfully!");
+                    System.out.println("Encrypted file saved as encrypted.txt");
+
+                } else if (choice == 2) {
+
+                    // Decryption
+                    result = processText(content.toString(), -key);
+
+                    BufferedWriter writer =
+                            new BufferedWriter(
+                                    new FileWriter("decrypted.txt"));
+
+                    writer.write(result);
+                    writer.close();
+
+                    System.out.println("File decrypted successfully!");
+                    System.out.println("Decrypted file saved as decrypted.txt");
+
+                } else {
+                    System.out.println("Invalid choice!");
+                }
+
+            } catch (IOException e) {
+                System.out.println("Error: File not found or cannot be read.");
             }
 
-            reader.close();
+            // Ask user whether to continue
+            System.out.print("\nDo you want to encrypt or decrypt another file? (yes/no): ");
+            again = scanner.nextLine();
 
-            String result;
+        } while (again.equalsIgnoreCase("yes"));
 
-            if (choice == 1) {
-                // Encryption
-                result = processText(content.toString(), key);
-
-                BufferedWriter writer =
-                        new BufferedWriter(new FileWriter("encrypted.txt"));
-
-                writer.write(result);
-                writer.close();
-
-                System.out.println("File encrypted successfully!");
-                System.out.println("Encrypted file saved as encrypted.txt");
-
-            } else if (choice == 2) {
-                // Decryption
-                result = processText(content.toString(), -key);
-
-                BufferedWriter writer =
-                        new BufferedWriter(new FileWriter("decrypted.txt"));
-
-                writer.write(result);
-                writer.close();
-
-                System.out.println("File decrypted successfully!");
-                System.out.println("Decrypted file saved as decrypted.txt");
-
-            } else {
-                System.out.println("Invalid choice!");
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error: File not found or cannot be read.");
-        }
+        System.out.println("\nThank you for using File Encryption/Decryption!");
 
         scanner.close();
     }
